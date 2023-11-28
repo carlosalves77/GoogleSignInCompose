@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
 }
 
 android {
@@ -74,4 +75,5 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     implementation ("androidx.navigation:navigation-compose:2.7.5")
     implementation ("io.coil-kt:coil-compose:2.4.0")
+
 }
