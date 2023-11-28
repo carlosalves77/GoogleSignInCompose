@@ -14,7 +14,7 @@ import kotlinx.coroutines.tasks.await
 import java.util.concurrent.CancellationException
 
 class GoogleAuthUiClient(
-    private val content: Context,
+    private val context: Context,
     private val oneTapClient: SignInClient
 ) {
 
@@ -26,8 +26,8 @@ class GoogleAuthUiClient(
                 buildSignInRequest()
             ).await()
         } catch (e: Exception) {
-    e.printStackTrace()
-            if(e is CancellationException) throw e
+            e.printStackTrace()
+            if (e is CancellationException) throw e
             null
         }
 
@@ -39,32 +39,32 @@ class GoogleAuthUiClient(
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
         return try {
-         val user = auth.signInWithCredential(googleCredentials).await().user
-           SignInResult(
-               data = user?.run {
-                   UserData(
-                       userId = uid,
-                       username = displayName!!,
-                       profilePictureUrl = photoUrl?.toString()
+            val user = auth.signInWithCredential(googleCredentials).await().user
+            SignInResult(
+                data = user?.run {
+                    UserData(
+                        userId = uid,
+                        username = displayName!!,
+                        profilePictureUrl = photoUrl?.toString()
 
-                   )
-               },
-               errorMessage = null
-           )
-        } catch (e: Exception) ({
-            if(e is CancellationException) throw e
+                    )
+                },
+                errorMessage = null
+            )
+        } catch (e: Exception){
+            if (e is CancellationException) throw e
             e.message?.let {
                 SignInResult(
                     data = null,
                     errorMessage = it
                 )
             }
-        })!!
+        }!!
     }
 
     suspend fun signOut() {
         try {
-        oneTapClient.signOut().await()
+            oneTapClient.signOut().await()
             auth.signOut()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -81,7 +81,7 @@ class GoogleAuthUiClient(
         )
     }
 
-    private fun buildSignInRequest() : BeginSignInRequest {
+    private fun buildSignInRequest(): BeginSignInRequest {
         return BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 GoogleIdTokenRequestOptions.builder()

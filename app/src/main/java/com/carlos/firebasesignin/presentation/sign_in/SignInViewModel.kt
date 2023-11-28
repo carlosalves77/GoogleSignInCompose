@@ -20,4 +20,10 @@ class SignInViewModel: ViewModel() {
         }
     }
 
+     fun resetState() {
+         _state.update {
+             SignInState()
+         }
+     }
+
 }
